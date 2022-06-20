@@ -37,7 +37,7 @@ def check_attribute_type(attribute) -> str:
 
 
 def get_number_of_values(attribute: str) -> int:
-    """Takes in a value for an attribute and returns the number of entries with that value or None if none are found"""
+    """Takes in a value for an attribute and returns the number of entries with that value"""
 
     # hardcode file, since we will only work with this dataset
     file = "../data/time_travel_media_table.xlsx"
@@ -78,14 +78,18 @@ def get_values_for_attribute(attribute: str) -> list:
             return df[df['Creator(s)'].str.contains(attribute, na=False)]
 
 
-print(get_number_of_values("Jana"))
-print(get_values_for_attribute("Jana"))
+def get_by_category_year_creator(category, year, creator=None):
+    """Takes in a category and a year and returns matches from the dataset"""
+
+    file = "../data/time_travel_media_table.xlsx"
+    df = pd.read_excel(file)
+
+    if creator is None:
+        return df[(df['Category'] == category) & (df['Year'].str.contains(year, na=False))]
+
+    else:
+        return df[(df['Category'] == category) & (df['Year'].str.contains(year, na=False))
+                  & df['Creator(s)'].str.contains(creator, na=False)]
 
 
-
-"""
-    # preprocess "Year" column for easier queries
-    df['Year'] = df['Year'].str[:4]
-    df = df.dropna(subset=['Year'])
-    df['Year'] = df['Year'].astype(int)
-"""
+print(get_by_category_year_creator("series", "2009"))
