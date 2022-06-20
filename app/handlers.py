@@ -41,17 +41,7 @@ def ask_if_creator(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConv
 
 
 def ask_creator(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
-
-
-
-
-
-
-
-
-
-
-
+    return 0
 
 
 def suggest_walkable_restaurants(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:

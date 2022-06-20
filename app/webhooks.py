@@ -55,7 +55,6 @@ def restaurants_intent_handler(conv: V2beta1DialogflowConversation) -> V2beta1Di
 
 @agent.handle(intent="restaurant.walkable")
 def walkable_intent_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
-
     if conv.contexts.has("find_restaurant_ctx"):
         print ("context has been found")
         return handlers.suggest_walkable_restaurants(conv)
