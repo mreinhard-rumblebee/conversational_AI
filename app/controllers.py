@@ -22,8 +22,11 @@ def query_arguments_in_dataset():
     file = "../data/time_travel_media_table.xlsx"
     df = pd.read_excel(file)
 
-    # convert "Year" column values from text to int for easier queries
+    # preprocess "Year" column for easier queries
+    df['Year'] = df['Year'].str[:4]
+    df = df.dropna(subset=['Year'])
     df['Year'] = df['Year'].astype(int)
+
     results = df[df['Year'] > 2020]
     print(df)
     print(results)
