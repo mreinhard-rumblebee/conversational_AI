@@ -36,11 +36,10 @@ def check_attribute_type(attribute) -> str:
             return "creator"
 
 
-def get_number_of_values(attribute: str) -> int:
+def get_number_of_values(file, attribute: str) -> int:
     """Takes in a value for an attribute and returns the number of entries with that value"""
 
     # hardcode file, since we will only work with this dataset
-    file = "../data/time_travel_media_table.xlsx"
     df = pd.read_excel(file)
 
     attribute_type = check_attribute_type(attribute)
@@ -57,11 +56,10 @@ def get_number_of_values(attribute: str) -> int:
             return len(df[df['Creator(s)'].str.contains(attribute, na=False)])
 
 
-def get_values_for_attribute(attribute: str) -> list:
+def get_values_for_attribute(file, attribute: str) -> list:
     """Takes in a value for an attribute and returns a list with all values for that attribute
     or None if none are found"""
 
-    file = "../data/time_travel_media_table.xlsx"
     df = pd.read_excel(file)
 
     attribute_type = check_attribute_type(attribute)
@@ -78,10 +76,9 @@ def get_values_for_attribute(attribute: str) -> list:
             return df[df['Creator(s)'].str.contains(attribute, na=False)]
 
 
-def get_by_category_year_creator(category, year, creator=None):
+def get_by_category_year_creator(file, category, year, creator=None):
     """Takes in a category and a year and returns matches from the dataset"""
 
-    file = "../data/time_travel_media_table.xlsx"
     df = pd.read_excel(file)
 
     if creator is None:
