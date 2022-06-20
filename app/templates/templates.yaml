@@ -1,0 +1,18 @@
+# Yaml file with response templates for handler functions
+
+
+test_response:
+- This is a test response.
+
+mode.travel.ask:
+- Would you like to walk to a nearby restaurant?
+- Do you prefer a restaurant at a walkable distance?
+- Is walking to a restaurant okay for you?
+
+walkable_restaurant:
+- Here is a walkable restaurant that servers Authentic cuisine of {{ cuisine }}
+
+not_walkable_restaurant:
+- Here is a great restaurant that servers Authentic cuisine of {{ cuisine }}
+
+

@@ -1,1 +1,1 @@
-# conversational_AI
+# Conversational AI Workshop
