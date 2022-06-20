@@ -22,7 +22,7 @@ def check_attribute_type(attribute) -> str:
 
     # check if attribute is a category
     categories = ['literature', 'films', 'series']
-    if attribute in categories:
+    if attribute.lower() in categories:
         return "category"
 
     else:
@@ -45,7 +45,7 @@ def get_number_of_values(file, attribute: str) -> int:
     attribute_type = check_attribute_type(attribute)
 
     if attribute_type == "category":
-        return len(df[df['Category'] == attribute])
+        return len(df[df['Category'] == attribute.lower()])
 
     else:
         if attribute_type == "year":
@@ -53,7 +53,7 @@ def get_number_of_values(file, attribute: str) -> int:
 
         else:
             # attribute must be creator(s) (or non-existent)
-            return len(df[df['Creator(s)'].str.contains(attribute, na=False)])
+            return len(df[df['Creator(s)'].str.contains(attribute, na=False, case=False)])
 
 
 def get_values_for_attribute(file, attribute: str) -> list:
@@ -65,7 +65,7 @@ def get_values_for_attribute(file, attribute: str) -> list:
     attribute_type = check_attribute_type(attribute)
 
     if attribute_type == "category":
-        return df[df['Category'] == attribute]
+        return df[df['Category'] == attribute.lower()]
 
     else:
         if attribute_type == "year":
@@ -73,7 +73,7 @@ def get_values_for_attribute(file, attribute: str) -> list:
 
         else:
             # attribute must be creator(s) (or non-existent)
-            return df[df['Creator(s)'].str.contains(attribute, na=False)]
+            return df[df['Creator(s)'].str.contains(attribute, na=False, case=False)]
 
 
 def get_by_category_year_creator(file, category, year, creator=None):
@@ -82,11 +82,18 @@ def get_by_category_year_creator(file, category, year, creator=None):
     df = pd.read_excel(file)
 
     if creator is None:
-        return df[(df['Category'] == category) & (df['Year'].str.contains(year, na=False))]
+        return df[(df['Category'] == category.lower()) & (df['Year'].str.contains(year, na=False))]
 
     else:
-        return df[(df['Category'] == category) & (df['Year'].str.contains(year, na=False))
-                  & df['Creator(s)'].str.contains(creator, na=False)]
+        return df[(df['Category'] == category.lower()) & (df['Year'].str.contains(year, na=False))
+                  & df['Creator(s)'].str.contains(creator, na=False, case=False)]
 
 
-#print(get_by_category_year_creator("series", "2009"))
+def get_by_title(file, title):
+    """Takes in a category and a year and returns matches from the dataset"""
+
+    df = pd.read_excel(file)
+    return df[df['Title'].str.contains(title, na=False, case=False)]
+
+
+# print(get_by_category_year_creator("../data/time_travel_media_table.xlsx", "Series", "2021", "michael"))
