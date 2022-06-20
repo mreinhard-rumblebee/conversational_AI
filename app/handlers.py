@@ -7,12 +7,52 @@
 from app import controllers
 from flask import render_template
 from flask_dialogflow.conversation import V2beta1DialogflowConversation
+from controllers import *
 
 # define sub handlers
 def test_intent(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     conv.ask(render_template("test_response"))
     conv.google.ask(render_template("test_response"))
     return conv
+
+# category search
+def ask_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    category = conv.parameters.get("category")
+    conv.contexts.set("category_search",lifespan_count=3, category = category)
+
+    conv.ask(render_template("mode.travel.ask"))
+
+    conv.google.ask(render_template("mode.year.ask"))
+    return conv
+
+# year search
+def ask_if_creator(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    year = conv.parameters.get('number')
+    conv.contexts.set("category_search",lifespan_count=3, year = year)
+    # check if year is in dataset
+    if controllers.get_number_of_values(str(year)) > 0:
+        conv.ask(render_template("mode.creator.ask"))
+        conv.google.ask(render_template("mode.creator.ask"))
+        return conv
+    else:
+        conv.ask(render_template("mode.year_out_of_range.ask"))
+        conv.google.ask(render_template("mode.year_out_of_range.ask"))
+        return conv
+
+
+def ask_creator(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+
+
+
+
+
+
+
+
+
+
+
+
 
 def suggest_walkable_restaurants(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
 

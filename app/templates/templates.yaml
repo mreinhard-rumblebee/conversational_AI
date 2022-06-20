@@ -4,6 +4,19 @@
 test_response:
 - This is a test response.
 
+mode.year.ask:
+- Which year do you want to search for?
+- What year are you searching for?
+
+mode.creator.ask:
+- Do you want to search for a specific creator?
+
+mode.year_out_of_range.ask:
+- This year does not exist in the dataset. Please try another one between 1733 and 2022.
+
+
+
+
 mode.travel.ask:
 - Would you like to walk to a nearby restaurant?
 - Do you prefer a restaurant at a walkable distance?
