@@ -15,17 +15,3 @@ mode.year_out_of_range.ask:
 - This year does not exist in the dataset. Please try another one between 1733 and 2022.
 
 
-
-
-mode.travel.ask:
-- Would you like to walk to a nearby restaurant?
-- Do you prefer a restaurant at a walkable distance?
-- Is walking to a restaurant okay for you?
-
-walkable_restaurant:
-- Here is a walkable restaurant that servers Authentic cuisine of {{ cuisine }}
-
-not_walkable_restaurant:
-- Here is a great restaurant that servers Authentic cuisine of {{ cuisine }}
-
-

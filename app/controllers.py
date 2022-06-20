@@ -89,4 +89,4 @@ def get_by_category_year_creator(file, category, year, creator=None):
                   & df['Creator(s)'].str.contains(creator, na=False)]
 
 
-print(get_by_category_year_creator("series", "2009"))
+#print(get_by_category_year_creator("series", "2009"))
