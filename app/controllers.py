@@ -36,6 +36,24 @@ def check_attribute_type(attribute) -> str:
             return "creator"
 
 
+def get_number_of_values_for_attribute(file, attribute: str) -> int:
+    """Takes in an attribute and returns the number of unique values for that attribute"""
+
+    # hardcode file, since we will only work with this dataset
+    df = pd.read_excel(file)
+
+    if attribute.lower() == "category":
+        return df['Category'].nunique()
+
+    else:
+        if attribute.lower() == "year":
+            return df['Year'].nunique()
+
+        else:
+            # attribute must be creator(s) (or non-existent)
+            return df['Creator(s)'].nunique()
+
+
 def get_number_of_values(file, attribute: str) -> int:
     """Takes in a value for an attribute and returns the number of entries with that value"""
 
@@ -97,4 +115,4 @@ def get_by_title(file, title):
 
 
 # print(get_by_category_year_creator("../data/time_travel_media_table.xlsx", "Series", "2021", "michael"))
-print(get_number_of_values("/Users/maxreinhard/PycharmProjects/conversational_AI/data/time_travel_media_table.xlsx", "year"))
+# print(get_number_of_values_for_attribute("../data/time_travel_media_table.xlsx", "Year"))
