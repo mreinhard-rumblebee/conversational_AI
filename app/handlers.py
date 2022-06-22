@@ -9,7 +9,6 @@ from flask import render_template
 from flask_dialogflow.conversation import V2beta1DialogflowConversation
 
 file = r"C:\Users\joche\OneDrive\05 TUM - FIM\FIM Semester 02\06 NLP workshop\group_work\data\time_travel_media_table.xlsx"
-
 # define sub handlers
 def test_intent(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     conv.ask(render_template("test_response"))
@@ -44,3 +43,12 @@ def ask_if_creator(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConv
 
 def ask_creator(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return 0
+
+# define sub handlers
+def general_nr_attribute_values(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    attribute = conv.parameters.get('attribute')
+    conv.contexts.set("general_nr_attribute_values", lifespan_count=2, attribute=attribute)
+    nr_values = controllers.get_number_of_values(file, attribute)
+    conv.ask(render_template("general_nr_attribute_values_response", attribute=attribute, nr_values=nr_values))
+    conv.google.ask(render_template("general_nr_attribute_values_response", attribute=attribute, nr_values=nr_values))
+    return conv

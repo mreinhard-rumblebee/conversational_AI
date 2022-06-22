@@ -32,3 +32,8 @@ def creator_intent_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialog
 @agent.handle(intent="titles.no_creator")
 def no_creator_intent_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.ask_creator(conv)
+
+# answer general question how many values an attribute has
+@agent.handle(intent="general.nr_attribute_values")
+def general_nr_attribute_values_intent_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.general_nr_attribute_values(conv)

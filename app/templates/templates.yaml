@@ -14,4 +14,6 @@ mode.creator.ask:
 mode.year_out_of_range.ask:
 - This year does not exist in the dataset. Please try another one between 1733 and 2022.
 
+general_nr_attribute_values_response:
+- The attribute {{ attribute }} has {{ nr_values }} values.
 

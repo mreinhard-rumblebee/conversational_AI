@@ -90,10 +90,11 @@ def get_by_category_year_creator(file, category, year, creator=None):
 
 
 def get_by_title(file, title):
-    """Takes in a category and a year and returns matches from the dataset"""
+    """Takes in a title and returns matches from the dataset"""
 
     df = pd.read_excel(file)
     return df[df['Title'].str.contains(title, na=False, case=False)]
 
 
 # print(get_by_category_year_creator("../data/time_travel_media_table.xlsx", "Series", "2021", "michael"))
+print(get_number_of_values("/Users/maxreinhard/PycharmProjects/conversational_AI/data/time_travel_media_table.xlsx", "year"))
