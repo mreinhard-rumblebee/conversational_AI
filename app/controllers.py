@@ -54,6 +54,24 @@ def get_number_of_values_for_attribute(file, attribute: str) -> int:
             return df['Creator(s)'].nunique()
 
 
+def get_values_for_attribute(file, attribute: str) -> int:
+    """Takes in an attribute and returns some of the unique values for that attribute"""
+
+    # hardcode file, since we will only work with this dataset
+    df = pd.read_excel(file)
+
+    if attribute.lower() == "category":
+        return random.sample(df['Category'].unique(), 3)
+
+    else:
+        if attribute.lower() == "year":
+            return random.sample(df['Year'].unique(), 3)
+
+        else:
+            # attribute must be creator(s) (or non-existent)
+            return random.sample(df['Creator(s)'].unique(), 3)
+
+
 def get_number_of_values(file, attribute: str) -> int:
     """Takes in a value for an attribute and returns the number of entries with that value"""
 

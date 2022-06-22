@@ -17,3 +17,11 @@ mode.year_out_of_range.ask:
 general_nr_attribute_values_response:
 - The attribute {{ attribute }} has {{ nr_values }} values.
 
+general_attribute_values_response:
+- The attribute {{ attribute }} has for example the following values {{ values }}
+
+author_only_search_response:
+- For creator {{ creator }} I found the following data {{ media }}
+
+title_only_search_response:
+- For title {{ title }} I found the following data {{ media }}
