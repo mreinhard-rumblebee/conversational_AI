@@ -117,9 +117,19 @@ def get_by_category_year_creator(file, category, year, creator=None):
 
     df = pd.read_excel(file)
 
+    # filter by category
+    if creator is None and year is None and category is not None:
+        return df[(df['Category'] == category.lower())]
+
+    # filter by year
+    if creator is None and category is None and year is not None:
+        return df[(df['Year'].str.contains(year, na=False))]
+
+    # filter by category and year
     if creator is None:
         return df[(df['Category'] == category.lower()) & (df['Year'].str.contains(year, na=False))]
 
+    # filter by category, year, and creator
     else:
         return df[(df['Category'] == category.lower()) & (df['Year'].str.contains(year, na=False))
                   & df['Creator(s)'].str.contains(creator, na=False, case=False)]
@@ -131,6 +141,13 @@ def get_by_title(file, title):
     df = pd.read_excel(file)
     return df[df['Title'].str.contains(title, na=False, case=False)]
 
+def produce_output_list(df):
+    """Takes in a queried dataframe and returns a list with title + author + year elements"""
+    year_list = df.iloc[:, 0].to_list()
+    title_list = df.iloc[:, 1].to_list()
+    creator_list = df.iloc[:, 2].to_list()
+    result = list(map(lambda x,y,z: x + " by " + y + ' from ' + z, title_list,creator_list,year_list))
+    return result
 
 # print(get_by_category_year_creator("../data/time_travel_media_table.xlsx", "Series", "2021", "michael"))
 # print(get_number_of_values_for_attribute("../data/time_travel_media_table.xlsx", "Year"))

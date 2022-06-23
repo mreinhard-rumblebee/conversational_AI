@@ -28,10 +28,16 @@ def year_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConver
 def creator_intent_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.ask_creator(conv)
 
-# creator: yes
+# creator: no
 @agent.handle(intent="titles.no_creator")
 def no_creator_intent_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
-    return handlers.ask_creator(conv)
+    return handlers.suggest_no_creator_titles(conv)
+
+# creator search
+@agent.handle(intent="titles.yes_creator")
+def creator_intent_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.suggest_yes_creator_titles(conv)
+
 
 # answer general question how many values an attribute has
 @agent.handle(intent="general.nr_attribute_values")
