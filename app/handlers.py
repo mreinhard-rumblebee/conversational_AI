@@ -31,16 +31,18 @@ def ask_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversati
 def ask_if_creator(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     year = conv.parameters.get('number')
 
+
     # if category was searched before
     if conv.contexts.has('category_search_ctx'):
+        category = conv.contexts.category_search_ctx.parameters['category']
         conv.contexts.set("category_search_ctx",lifespan_count=3, year = year)
         # check if year is in dataset
-        yaml_template = "mode.creator.ask" if controllers.get_number_of_values(file, str(int(year))) > 0 else "mode.year_out_of_range.ask"
+        yaml_template = "mode.creator.ask" if controllers.get_number_of_values(file, int(year), category=category) > 0 else "mode.year_out_of_range.ask"
     # if nothing was searched before
     else:
         conv.contexts.set("year_search_ctx", lifespan_count=3, year=year)
         # check if year is in dataset
-        yaml_template = "mode.creator.ask" if controllers.get_number_of_values(file, str(int(year))) > 0 else "mode.year_out_of_range.ask"
+        yaml_template = "mode.creator.ask" if controllers.get_number_of_values(file, int(year)) > 0 else "mode.year_out_of_range.ask"
 
     conv.ask(render_template(yaml_template))
     conv.google.ask(render_template(yaml_template))
@@ -50,10 +52,10 @@ def ask_if_creator(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConv
 def suggest_no_creator_titles(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     if conv.contexts.has('category_search_ctx'):
         category = conv.contexts.category_search_ctx.parameters['category']
-        year = str(int(conv.contexts.category_search_ctx.parameters['year']))
+        year = int(conv.contexts.category_search_ctx.parameters['year'])
     elif conv.contexts.has('year_search_ctx'):
         category = None
-        year = str(int(conv.contexts.year_search_ctx.parameters['year']))
+        year = int(conv.contexts.year_search_ctx.parameters['year'])
     else:
         category, year = None, None
 
@@ -81,29 +83,37 @@ def ask_creator(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConvers
 def suggest_yes_creator_titles(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     if conv.contexts.has('category_search_ctx'):
         category = conv.contexts.category_search_ctx.parameters['category']
-        year = str(int(conv.contexts.category_search_ctx.parameters['year']))
+        year = int(conv.contexts.category_search_ctx.parameters['year'])
     elif conv.contexts.has('year_search_ctx'):
         category = None
-        year = str(int(conv.contexts.year_search_ctx.parameters['year']))
+        year = int(conv.contexts.year_search_ctx.parameters['year'])
     else:
         category, year = None, None
 
-    creator = conv.parameters.get('given-name')
+    creator_firstname = conv.parameters.get('given-name')
+    creator_sirname = conv.parameters.get('last-name')
+    creator = creator_firstname + ' ' + creator_sirname
 
-    # check if year is in dataset
-    if controllers.get_number_of_values(file,creator) == 0:
+    # check if creator (for year) is in dataset
+    if controllers.get_number_of_values(file,creator,year=year) == 0:
         conv.ask(render_template("mode.creator_not_in_dataset.ask"))
         conv.google.ask(render_template("mode.creator_not_in_dataset.ask"))
         return conv
     else:
         # get titles from dataset and convert to list
         df = controllers.get_by_category_year_creator(file, category, year,creator=creator)
-        nr_items = 3 if len(df) > 2 else len(df)
-        output_list = controllers.produce_output_list(df.iloc[:nr_items, :])
+        if len(df) == 0:
+            'mode.output_title_yes_creator_year_empty.ask'
+            conv.ask(render_template('mode.output_title_yes_creator_year_empty.ask', creator=creator))
+            conv.google.ask(render_template('mode.output_title_yes_creator_year_empty.ask', creator=creator))
+            return conv
+        else:
+            nr_items = 3 if len(df) > 2 else len(df)
+            output_list = controllers.produce_output_list(df.iloc[:nr_items, :])
 
-        conv.ask(render_template("mode.output_title_yes_creator_year.ask", output_list=output_list, nr_items=nr_items, creator=creator))
-        conv.google.ask(render_template("mode.output_title_yes_creator_year.ask", output_list=output_list, nr_items=nr_items, creator=creator))
-        return conv
+            conv.ask(render_template("mode.output_title_yes_creator_year.ask", output_list=output_list, nr_items=nr_items, creator=creator))
+            conv.google.ask(render_template("mode.output_title_yes_creator_year.ask", output_list=output_list, nr_items=nr_items, creator=creator))
+            return conv
 
 # get nr of attribute values
 def general_nr_attribute_values(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:

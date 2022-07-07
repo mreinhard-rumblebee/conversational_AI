@@ -27,7 +27,7 @@ mode.output_title_yes_creator_year.ask:
 - Here is a list of top {{ nr_items }} titles from {{ creator }}. {% for output in output_list %} {% if not loop.last %} {{ output }}, {% else %} {{ output }}. {% endif %} {% endfor %}
 
 general_nr_attribute_values_response:
-- The attribute {{ attribute }} has {{ nr_values }} values.
+- The attribute {{ attribute }} has {{ nr_values }} unique values.
 
 general_attribute_values_response:
 - The attribute {{ attribute }} has for example the following values {{ values }}
@@ -37,5 +37,8 @@ author_only_search_response:
 
 title_only_search_response:
 - For title {{ title }} I found the following data {{ media }}
+
+mode.output_title_yes_creator_year_empty.ask:
+- Unfortunately we cannot find data for author {{ creator }}. Please try another one.
 
 # {% for skill in skill_list %} {% if not loop.last %} {{ skill }}, {% else %} und {{ skill }}. {% endif %} {% endfor %}
